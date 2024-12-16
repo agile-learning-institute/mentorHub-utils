@@ -7,6 +7,6 @@ setup(
     author='Agile Learning Institute',
     author_email='devs@agile-learning.institute',
     url='https://github.com/agile-learning-institute/mentorHub-flask-utils',
-    packages=find_packages(),
+    packages=['mentorhub_flask_utils'],
     python_requires='>=3.6',
 )
