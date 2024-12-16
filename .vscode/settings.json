@@ -1,0 +1,11 @@
+{
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestArgs": [
+      "-v",
+      "-s",
+      "./mentorhub_flask_utils",
+      "-p",
+      "test*.py"
+    ]
+  }
