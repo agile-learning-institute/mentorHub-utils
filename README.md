@@ -15,4 +15,7 @@ This is collection of simple Flask utilities for dealing with tokens and creatin
 pipenv install --dev
 ```
 
-
+## Test package build
+```bash
+python setup.py sdist
+```
