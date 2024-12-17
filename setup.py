@@ -5,14 +5,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='mentorhub-flask-utils',
-    version='1.0.2',
-    description='Flask helper utilities for Mentorhub API projects',
+    name='mentorhub-utils',
+    version='1.0.0',
+    description='Helper utilities for Mentorhub API projects',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Agile Learning Institute',
     author_email='devs@agile-learning.institute',
-    url='https://github.com/agile-learning-institute/mentorHub-flask-utils',
+    url='https://github.com/agile-learning-institute/mentorHub-utils',
     packages=find_packages(),
     install_requires=[
         "flask",

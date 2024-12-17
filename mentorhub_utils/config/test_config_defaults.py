@@ -1,6 +1,6 @@
 import json
 import unittest
-from mentorhub_config.MentorHub_Config import MentorHub_Config
+from mentorhub_utils.config.MentorHub_Config import MentorHub_Config
 
 class TestConfigDefaults(unittest.TestCase):
 

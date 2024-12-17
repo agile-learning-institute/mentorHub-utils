@@ -2,7 +2,7 @@ import logging
 import sys
 from bson import ObjectId 
 from pymongo import MongoClient
-from mentorhub-utils.config.MentorHub_Config import MentorHub_Config
+from mentorhub_utils.config.MentorHub_Config import MentorHub_Config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -21,12 +21,13 @@ class MentorHubMongoIO:
             cls._instance.config = MentorHub_Config.get_instance()
         return cls._instance
 
-    def initialize(self, enumerators_collection_key):
-        """Initialize MongoDB connection and load configurations."""
+    def configure(self, enumerators_collection_key):
+        """Initialize Config values for Versions and Enumerators"""
+        self.config = MentorHub_Config.get_instance()
         self._connect()
         self._load_versions()
         self._load_enumerators(enumerators_collection_key)
-
+        
     def _connect(self):
         """Connect to MongoDB."""
         try:
@@ -57,7 +58,8 @@ class MentorHubMongoIO:
         try:
             versions_collection_name = self.config.VERSION_COLLECTION_NAME
             self.config.versions = self.get_documents(versions_collection_name)
-            
+            print(f"Versions: {self.config.versions}")
+
             logger.info(f"{len(self.config.versions)} Versions Loaded.")
         except Exception as e:
             logger.fatal(f"Failed to get or load versions: {e} - exiting")
@@ -193,8 +195,8 @@ class MentorHubMongoIO:
     
     # Singleton Getter
     @staticmethod
-    def get_instance(primary_collection):
+    def get_instance():
         """Get the singleton instance of the MongoIO class."""
         if MentorHubMongoIO._instance is None:
-            MentorHubMongoIO(primary_collection)
+            MentorHubMongoIO()
         return MentorHubMongoIO._instance
