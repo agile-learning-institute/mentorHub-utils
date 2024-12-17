@@ -26,7 +26,7 @@ This is a collection of simple Flask utilities:
  This is a helper class that allows the flask.json method to properly handle ObjectID and datetime values by converting them to strings.
 ```py
 from flask import Flask
-from mentorhub_flask_utils import MongoJSONEncoder
+from mentorhub_utils import MongoJSONEncoder
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -61,7 +61,7 @@ Valid roles are listed in the mentorhub-mongodb repo's [enumerators file](https:
 ### Example
 Here is how these methods are used in a Flask Route Handler
 ```py
-from mentorhub_flask_utils import create_breadcrumb, create_token
+from mentorhub_utils import create_breadcrumb, create_token
 token = create_token()
 breadcrumb = create_breadcrumb(token)
 MyService.doSomething(myData, ..., token, breadcrumb)
