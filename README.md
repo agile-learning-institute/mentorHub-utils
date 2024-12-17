@@ -31,7 +31,7 @@ All API's will be secured with industry standard bearer tokens used to implement
 Valid roles are listed in the mentorhub-mongodb repo's [enumerators file](https://github.com/agile-learning-institute/mentorHub-mongodb/blob/main/configurations/enumerators/enumerators.json) but the roles listed above are the only one's currently used in the mentorHub platform.
 
 ### Breadcrumbs
-All database collections include a lastModified property that has the following properties:
+All database collections include a lastModified "breadcrumb" property used to track changes over time. The breadcrumb has the following properties:
 ```json
 {
         "atTime": "date-time the document was last modified",
@@ -68,18 +68,24 @@ pipenv install --dev
 pipenv run test
 ```
 
+## Clean package build path
+```bash
+pipenv run clean
+```
+
 ### Build the Package
 ```bash
 pipenv run build
 ```
 
-## Check twine is ready to upload
+## Twine check 
+To check if the package is ready to publish
 ```bash
 pipenv run check
 ```
 
 # Publish the Package
-You should successfully run ``build`` and ``check`` before publishing.
+You should successfully run ``clean``, ``build`` and ``check`` before publishing.
 ```bash
 pipenv run publish
 ```
