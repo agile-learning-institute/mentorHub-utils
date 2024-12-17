@@ -4,8 +4,8 @@ import unittest
 
 from bson import ObjectId
 from pymongo import ASCENDING, DESCENDING
-from mentorhub_config.MentorHub_Config import MentorHub_Config
-from src.utils.mentorhub_mongo_io import MentorHubMongoIO
+from mentorhub_utils.config.MentorHub_Config import MentorHub_Config
+from mentorhub_utils.mongo_utils.mentorhub_mongo_io import MentorHubMongoIO
 
 class TestMentorhubMongoIO(unittest.TestCase):
     
@@ -15,12 +15,11 @@ class TestMentorhubMongoIO(unittest.TestCase):
         
         MentorHubMongoIO._instance = None
         mongo_io = MentorHubMongoIO.get_instance()
-        mongo_io.initialize("curriculum")
-        print(f"Setup Connected: {mongo_io.connected}")
+        mongo_io.configure(self.config.ENCOUNTERS_COLLECTION_NAME)
 
     def tearDown(self):
         mongo_io = MentorHubMongoIO.get_instance()
-        mongo_io.delete_document("encounter", self.test_id)
+        mongo_io.delete_document(self.config.ENCOUNTERS_COLLECTION_NAME, self.test_id)
         mongo_io.disconnect()
     
     def test_singleton_behavior(self):
@@ -45,13 +44,13 @@ class TestMentorhubMongoIO(unittest.TestCase):
             "status": "Active"
         }
         mongo_io = MentorHubMongoIO.get_instance()
-        self.test_id = mongo_io.create_document("encounters", test_data)
+        self.test_id = mongo_io.create_document(self.config.ENCOUNTERS_COLLECTION_NAME, test_data)
         encounter_id_str = str(self.test_id)
         
         self.assertEqual(encounter_id_str, str(self.test_id))
 
         # Retrieve the document
-        encounter = mongo_io.get_document("encounters", encounter_id_str)
+        encounter = mongo_io.get_document(self.config.ENCOUNTERS_COLLECTION_NAME, encounter_id_str)
         self.assertIsInstance(encounter, dict)
         self.assertIsInstance(encounter["_id"], ObjectId)
         self.assertEqual(encounter["personId"], ObjectId("aaaa00000000000000000004"))
@@ -62,8 +61,7 @@ class TestMentorhubMongoIO(unittest.TestCase):
         test_update = {
             "personId": ObjectId("aaaa00000000000000011111")
         }
-        encounter = mongo_io.update_document("encounters", encounter_id_str, test_update)
-        print(f"Update Returned {encounter}")
+        encounter = mongo_io.update_document(self.config.ENCOUNTERS_COLLECTION_NAME, encounter_id_str, test_update)
         self.assertIsInstance(encounter, dict)
         self.assertIsInstance(encounter["_id"], ObjectId)
         self.assertEqual(encounter["personId"], ObjectId("aaaa00000000000000011111"))

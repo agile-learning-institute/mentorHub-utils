@@ -5,6 +5,7 @@ name = "pypi"
 
 [scripts]
 test = "python setup.py sdist"
+unit = "python -m unittest discover -s ./mentorhub_utils -p 'test_*.py'"
 clean = "rm -rf ./dist"
 build = "python -m build"
 check = "twine check dist/*"

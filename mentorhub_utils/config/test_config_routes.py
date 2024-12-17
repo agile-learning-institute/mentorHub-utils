@@ -1,7 +1,7 @@
 import unittest
 from flask import Flask
-from mentorhub_flask_utils import create_config_routes
-from mentorhub_flask_utils import MongoJSONEncoder
+from mentorhub_utils.config.config_routes import create_config_routes
+from mentorhub_utils.flask_utils.ejson_encoder import MongoJSONEncoder
 
 class TestConfigRoutes(unittest.TestCase):
 

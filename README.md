@@ -15,15 +15,15 @@ These utilities support the mentorHub platform.
 - [Contributing](#contributing)
 
 # Flask Utilities
-This is collection of simple Flask utilities:
+This is a collection of simple Flask utilities:
 - MongoJSONEncoder converts ObjectID and datetime values to strings
-- create_token() builds a Roles Based Access Control token
+- create_token() builds a Roles Based Access Control (RBAC) token
 - create_breadcrumb(token) builds the breadcrumb used when updating the database
 
 ## Usage
 
 ### MongoJSONEncoder
-This is a helper class that allows the flask.json method to properly handle ObjectID and datetime values by converting them to strings.
+ This is a helper class that allows the flask.json method to properly handle ObjectID and datetime values by converting them to strings.
 ```py
 from flask import Flask
 from mentorhub_flask_utils import MongoJSONEncoder
@@ -31,10 +31,14 @@ from mentorhub_flask_utils import MongoJSONEncoder
 # Initialize Flask App
 app = Flask(__name__)
 app.json = MongoJSONEncoder(app)
+
+# In flask request handler
+from flask import jsonify
+print jsonify(dict)
 ```
 
 ### Tokens
-All API's will be secured with industry standard bearer tokens used to implement Role Based Access Control (RBAC). The create_token method will decode the token and extract claims for a user_id and roles, throwing an exception if the token is not found or not properly encoded. 
+ All API's will be secured with industry standard bearer tokens used to implement Role Based Access Control (RBAC). The create_token method will decode the token and extract claims for a user_id and roles, throwing an exception if the token is not found or not properly encoded. 
 ```json
 {
     "user_id": "The users PersonID",
@@ -44,7 +48,7 @@ All API's will be secured with industry standard bearer tokens used to implement
 Valid roles are listed in the mentorhub-mongodb repo's [enumerators file](https://github.com/agile-learning-institute/mentorHub-mongodb/blob/main/configurations/enumerators/enumerators.json) but the roles listed above are the only one's currently used in the mentorHub platform.
 
 ### Breadcrumbs
-All database collections include a lastModified "breadcrumb" property used to track changes over time. The breadcrumb has the following properties:
+ All database collections include a lastModified "breadcrumb" property used to track changes over time. The breadcrumb has the following properties:
 ```json
 {
         "atTime": "date-time the document was last modified",
@@ -81,7 +85,7 @@ print config.LOGGING_LEVEL
 ```
 
 ### config_routes()
-This is a simple flask request handler to be used to expose the config data on a config endpoint.
+ This is a simple flask request handler to be used to expose the config data on a config endpoint.
 ```py
 from flask import Flask
 app = Flask(__name__)
@@ -91,9 +95,17 @@ app.register_blueprint(config_handler, url_prefix='/api/config')
 
 # Mongo Utilities
 Simple wrappers for MongoIO and a Config Initializer. 
+- [get_instance()](#get_instance)
+- [initialize()](#initialize)
+- [configure(enumerators_key)](#configureenumerators_key)
+- [disconnect](#disconnect)
+- [get_documents](#get_documentscollection_name-match-project-order)
+- [get_document](#get_documentcollection_name-string_id)
+- [create_document](#create_documentcollection_name-document)
+- [update_document](#update_documentcollection_name-_id-updates)
+- [delete_document](#delete_documentcollection_name-string_id)
 
 ## Usage
-These are the methods of the ``MentorHubMongoIO`` class
 
 ### get_instance()
  Get a reference to the Singleton object
@@ -101,9 +113,12 @@ These are the methods of the ``MentorHubMongoIO`` class
 mongo_io = MentorHubMongoIO.get_instance()
 ```
 
-### initialize()
- This method will initialize the MongoIO singleton object, and connect to the database. 
-  NOTE: that you should not ever have to use this method as ``get_instance()`` will initialize if necessary.
+### configure(enumerators_key)
+ This method will initialize the MongoIO singleton object, connect to the database, and update the Config.versions and Config.enumerators values. You should call this function when initializing the mongodb connection. This method takes as a parameter the primary collection name used to load enumerators. 
+```py
+mongo_io = Mentorhub_MongoIO.get_instance()
+mongo_io.configure(config.MAIN_COLLECTION_NAME)
+```
 
 ### disconnect()
  This Method will disconnect from the database in a graceful way. You should call this method when the server process is ending.
@@ -114,22 +129,42 @@ mongo_io.disconnect()
 
 ### get_documents(collection_name, match, project, order)
  This is a convenience method to get a list of documents based on Mongo Match, project, and sort order parameters. 
-
+```py
+match = {"name": {"$regex": query}}
+order = [('name', ASCENDING)]
+project = {"_id":1,"name":1}
+documents = mentorhub_mongoIO.get_documents("COLLECTION_NAME", match, project, order)
+```
 ### get_document(collection_name, string_id)
  This is a convenience method to get a single document based on ID
+```py
+document = mentorhub_mongoIO.get_document("COLLECTION_NAME", "_ID String")
+```
 
 ### create_document(collection_name, document)
  This is a convenient method for creating a single document
+```py
+document = {"foo":"bar"}
+created = mentorhub_mongoIO.create_document("COLLECTION_NAME", document)
+```
 
-### update_document
+### update_document(collection_name, _id, updates)
  This is a convenience method for updating a single document based on ID
+```py
+id = "24-byte-id"
+patch = {"foo":"bar"}
+updated = mentorhub_mongoIO.update_document("COLLECTION_NAME", id, patch)
+```
 
-### delete_document()
- This is a convenience method for deleting a document based on ID
-
-### 
+### delete_document(collection_name, string_id)
+ This is a convenience method for deleting a document based on ID. This is an actual live delete, not a soft delete. 
+```py
+id = "24-byte-id"
+updated = mentorhub_mongoIO.delete_document("COLLECTION_NAME", id)
+```
 
 # Contributing
+If you want to contribute to this library, here are the instructions.
 
 ## Prerequisites
 
@@ -141,7 +176,12 @@ mongo_io.disconnect()
 pipenv install --dev
 ```
 
-## Test package 
+## Run unit testing
+```bash
+pipenv run unit
+```
+
+## Test setup.py package 
 ```bash
 pipenv run test
 ```
@@ -167,4 +207,5 @@ You should successfully run ``clean``, ``build`` and ``check`` before publishing
 ```bash
 pipenv run publish
 ```
+NOTE: You will be prompted for PyPi authentication credentials. You should not need to use the command, it is used by the GitHub Actions CI. 
 
