@@ -1,14 +1,26 @@
-# mentorHub-flask-utils
+# mentorHub-utils
+
+PyPi install
+```sh
+pipenv install mentorhub-utils
+```
 
 ## Overview
+These utilities support the mentorHub platform. 
 
-This is collection of simple Flask utilities for MentorHub API projects. 
+#### Table of Contents
+- [Flask Utilities](#flask-utilities)
+- [Config Utilities](#config-utilities)
+- [Mongo Utilities](#mongo-utilities)
+- [Contributing](#contributing)
 
-# Usage
-Install the package
-```sh
-pipenv install mentorhub-flask-utils
-```
+# Flask Utilities
+This is collection of simple Flask utilities:
+- MongoJSONEncoder converts ObjectID and datetime values to strings
+- create_token() builds a Roles Based Access Control token
+- create_breadcrumb(token) builds the breadcrumb used when updating the database
+
+## Usage
 
 ### MongoJSONEncoder
 This is a helper class that allows the flask.json method to properly handle ObjectID and datetime values by converting them to strings.
@@ -20,6 +32,7 @@ from mentorhub_flask_utils import MongoJSONEncoder
 app = Flask(__name__)
 app.json = MongoJSONEncoder(app)
 ```
+
 ### Tokens
 All API's will be secured with industry standard bearer tokens used to implement Role Based Access Control (RBAC). The create_token method will decode the token and extract claims for a user_id and roles, throwing an exception if the token is not found or not properly encoded. 
 ```json
@@ -51,14 +64,79 @@ MyService.doSomething(myData, ..., token, breadcrumb)
 logger.info(f"Did Something completed successfully {breadcrumb.correlationId}")
 ```
 
-## Contributing
+# Config Utilities
+This is collection of utilities to support API Configuration in a standard way
+- Mentorhub_Config handles configuration values
+- config_routes() is a Flask request handler
 
-### Prerequisites
+## Usage
+Standard Config
+
+### Config
+Standard mental hub configuration values. Configurations are managed in a consistent way favoring file based configuration values, then environment, configuration values, and then default values. See the [Mentorhub_Config.py](./mentorhub_utils/config/MentorHub_Config.py) for details on the configuration values.
+
+```py
+config = Mentorhub_Config.get_instance()
+print config.LOGGING_LEVEL
+```
+
+### config_routes()
+This is a simple flask request handler to be used to expose the config data on a config endpoint.
+```py
+from flask import Flask
+app = Flask(__name__)
+config_handler = create_config_routes()
+app.register_blueprint(config_handler, url_prefix='/api/config')
+```
+
+# Mongo Utilities
+Simple wrappers for MongoIO and a Config Initializer. 
+
+## Usage
+These are the methods of the ``MentorHubMongoIO`` class
+
+### get_instance()
+ Get a reference to the Singleton object
+```py
+mongo_io = MentorHubMongoIO.get_instance()
+```
+
+### initialize()
+ This method will initialize the MongoIO singleton object, and connect to the database. 
+  NOTE: that you should not ever have to use this method as ``get_instance()`` will initialize if necessary.
+
+### disconnect()
+ This Method will disconnect from the database in a graceful way. You should call this method when the server process is ending.
+```py
+mongo_io = MentorHubMongoIO.get_instance()
+mongo_io.disconnect()
+```
+
+### get_documents(collection_name, match, project, order)
+ This is a convenience method to get a list of documents based on Mongo Match, project, and sort order parameters. 
+
+### get_document(collection_name, string_id)
+ This is a convenience method to get a single document based on ID
+
+### create_document(collection_name, document)
+ This is a convenient method for creating a single document
+
+### update_document
+ This is a convenience method for updating a single document based on ID
+
+### delete_document()
+ This is a convenience method for deleting a document based on ID
+
+### 
+
+# Contributing
+
+## Prerequisites
 
 - [Python](https://www.python.org/downloads/)
 - [Pipenv](https://pipenv.pypa.io/en/latest/installation.html)
 
-### Install Dependencies
+## Install Dependencies
 ```bash
 pipenv install --dev
 ```
@@ -89,3 +167,4 @@ You should successfully run ``clean``, ``build`` and ``check`` before publishing
 ```bash
 pipenv run publish
 ```
+

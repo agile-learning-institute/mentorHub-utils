@@ -4,7 +4,7 @@
     "python.testing.unittestArgs": [
       "-v",
       "-s",
-      "./mentorhub_flask_utils",
+      "./mentorhub_utils",
       "-p",
       "test*.py"
     ]
