@@ -3,6 +3,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+test = "python setup.py sdist"
+clean = "rm -rf ./dist"
+build = "python -m build"
+check = "twine check dist/*"
+publish = "twine upload dist/*"
+
 [packages]
 flask = "*"
 pymongo = "*"
@@ -10,6 +17,7 @@ pymongo = "*"
 [dev-packages]
 setuptools = "*"
 twine = "*"
+build = "*"
 
 [requires]
 python_version = "3.12"
