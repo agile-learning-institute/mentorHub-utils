@@ -6,4 +6,8 @@
 ## [1.0.2] - 2024-12-17
 ### Fixed
 - Fixed export of create_config_routes
+## [1.0.3] - 2024-12-28
+### Improved
+- Added mongo utility encode_properties - encode_document() 
+
 
