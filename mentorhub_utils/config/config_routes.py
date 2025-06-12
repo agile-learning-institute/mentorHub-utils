@@ -2,7 +2,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from mentorhub_utils.flask_utils import create_breadcrumb, create_token
 from mentorhub_utils.config.MentorHub_Config import MentorHub_Config
 
@@ -16,7 +16,7 @@ def create_config_routes():
     def get_config():
         try:
             # Return the JSON representation of the config object
-            token = create_token()
+            token = create_token(request.authorization)
             breadcrumb = create_breadcrumb(token)
             logger.info(f"Get Config Success {breadcrumb}")
             return jsonify(config.to_dict(token)), 200

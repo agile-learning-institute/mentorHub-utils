@@ -16,7 +16,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         "flask",
-        "pymongo"
+        "pymongo",
+        "joserfc"
     ],
     license='Apache-2.0',
     classifiers=[
