@@ -26,4 +26,4 @@ def create_token(encoded_jwt):
     key = get_key()
     token = get_token(encoded_jwt, key)
 
-    return token
+    return token.claims
