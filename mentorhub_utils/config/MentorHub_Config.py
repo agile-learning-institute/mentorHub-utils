@@ -50,6 +50,7 @@ class MentorHub_Config:
             self.ELASTIC_INDEX_NAME = ""
             self.MONGO_CONNECTION_STRING = ""
             self.ELASTIC_CLIENT_OPTIONS = {}
+            self.API_KEY = ''
     
             # Default Values grouped by value type            
             self.config_strings = {
@@ -86,6 +87,7 @@ class MentorHub_Config:
             self.config_string_secrets = {
                 "ELASTIC_INDEX_NAME": "mentorhub", 
                 "MONGO_CONNECTION_STRING": "mongodb://mongodb:27017/?replicaSet=rs0",
+                "API_KEY": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqHGgfkNCTiFeRWDOr3ip\nr452VyEmnQ99UBSK1Og9QjKT1mMTzOpUogJIj9hEmuquAFg4al8DQqqFxFqm64zr\nblgJxO4RDw1vxKxUVSVR+IYypxxh/NC/fLF78bGfsDj7jMM/bKCl40Y3t8OUXRxt\nrxXw53M2EzRSGQSzf2YhGRwxBtQ5vUulfQjLHdqKhn54GoBf0sWSFcCspCGnDAuw\nvyjeG+OkeeNLaAO+A0vrg/T3OFKXYkhG+OJaKW7eh3PeMNKw10naoZNx2d3ig5vR\nIul3wl8oL7I4wp/FKQtGkKgBhsTGe6+2FN+TghKErprUXuSq6zw1Qrta29wo9P7r\nMwIDAQAB\n-----END PUBLIC KEY-----\n"
             }
             self.config_json_secrets = {
                 "ELASTIC_CLIENT_OPTIONS": '{"node":"http://localhost:9200"}',

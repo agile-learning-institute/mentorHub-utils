@@ -1,5 +1,3 @@
-import os
-
 import werkzeug.exceptions
 
 from flask import request
@@ -8,10 +6,14 @@ from joserfc.errors import JoseError
 from joserfc.jwk import RSAKey
 from werkzeug.datastructures import WWWAuthenticate
 
+from MentorHub_Config import MentorHub_Config
+
 def create_token(encoded_jwt):
 
+    config = MentorHub_Config.get_instance()
+
     def get_key():
-        key = RSAKey.import_key(os.getenv("API_KEY"))
+        key = RSAKey.import_key(config.API_KEY)
 
         return key
 
