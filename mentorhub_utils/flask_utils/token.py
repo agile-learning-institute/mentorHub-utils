@@ -8,7 +8,7 @@ from joserfc.errors import JoseError
 from joserfc.jwk import RSAKey
 from werkzeug.datastructures import WWWAuthenticate
 
-from MentorHub_Config import MentorHub_Config
+from mentorhub_utils.config.MentorHub_Config import MentorHub_Config
 
 def create_token():
 
