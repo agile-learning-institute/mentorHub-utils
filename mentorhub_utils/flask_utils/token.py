@@ -1,3 +1,5 @@
+import os
+
 import werkzeug.exceptions
 
 from flask import request
@@ -8,9 +10,11 @@ from werkzeug.datastructures import WWWAuthenticate
 
 from MentorHub_Config import MentorHub_Config
 
-def create_token(encoded_jwt):
+def create_token():
 
     config = MentorHub_Config.get_instance()
+
+    encoded_jwt = request.authorization.token
 
     def get_key():
         key = RSAKey.import_key(config.API_KEY)

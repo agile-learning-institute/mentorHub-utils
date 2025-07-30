@@ -16,7 +16,7 @@ def create_config_routes():
     def get_config():
         try:
             # Return the JSON representation of the config object
-            token = create_token(request.authorization.token)
+            token = create_token()
             breadcrumb = create_breadcrumb(token)
             logger.info(f"Get Config Success {breadcrumb}")
             return jsonify(config.to_dict(token)), 200
