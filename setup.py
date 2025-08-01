@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='mentorhub-utils',
-    version='1.0.3',
+    version='1.1.0',
     description='Helper utilities for Mentorhub API projects',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -16,7 +16,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         "flask",
-        "pymongo"
+        "pymongo",
+        "joserfc"
     ],
     license='Apache-2.0',
     classifiers=[

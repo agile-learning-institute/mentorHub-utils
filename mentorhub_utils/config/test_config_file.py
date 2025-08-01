@@ -19,7 +19,7 @@ class TestConfigFiles(unittest.TestCase):
 
     def test_file_string_properties(self):
         for key, default in {**self.config.config_strings, **self.config.config_string_secrets}.items():
-            if key != "BUILT_AT" and key != "CONFIG_FOLDER":
+            if key != "BUILT_AT" and key != "CONFIG_FOLDER" and key != "API_KEY":
                 self.assertEqual(getattr(self.config, key), "TEST_VALUE")
 
     def test_file_int_properties(self):

@@ -9,5 +9,5 @@
 ## [1.0.3] - 2024-12-28
 ### Improved
 - Added mongo utility encode_properties - encode_document() 
-
-
+## [1.1.0] - 2025-07-30
+- Implemented create_token()

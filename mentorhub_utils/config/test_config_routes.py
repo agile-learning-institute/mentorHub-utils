@@ -15,7 +15,7 @@ class TestConfigRoutes(unittest.TestCase):
 
     def test_get_config_success(self):
         # Simulate a GET request to the /api/config endpoint
-        response = self.client.get('/api/config/')
+        response = self.client.get('/api/config/', headers={"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VyX3JvbGVzIjpbIlN0YWZmIl0sIm1vbmdvX2lkIjoiYWFhYTAwMDAwMDAwMDAwMDAwMDAwMDAxIn0.ZBMSyki3fPetSyLaOj6Zln9uL8-GnXr5biWMwC-bG4KTWZwtS6kDWatbmKzviPG5aqKfFJgkgZOCeyI9RvvFDgjLStdslt-6yqzdTuu7k1ypscXwhrnxDQtMTdcsccpUqSvciTcbXuIycAexRz1SBvoxB8HHDri4gBQQUAybsQT3YCpI-hasNDWl1bqCFksJc7AeB9MCbwLEQteZ0nnYqXvE6T3a0Ncp6uGNoTXJKxw0QOqUOtqjyn2wPIf925AysVAv-cdnW0PhmuhkHuvz3D45EkVJvOtZKtmg-ywMtOzkPhqS_6J8eQOaCCFu2Co_HDBWMX1Dqw5o3PKbrKWMSg"})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.is_json)
 
